@@ -1,0 +1,141 @@
+
+struct RiftType
+{
+	LinkedList * allowedTypes;
+};
+
+struct RiftVariable
+{
+	char* variableName;
+	void * value;
+	RiftType * type;
+};
+
+struct RiftMethod
+{
+	char* methodName;
+};
+
+struct RiftClass
+{
+	char* className;
+	struct RiftClass * superclass;
+	
+	LinkedList * instances;
+	
+	HashMap * classMethodIndex;
+	HashMap * classVariableIndex;
+	ArrayList * classMethods;
+	ArrayList * classVariables;
+	
+	HashMap * instanceMethodIndex;
+	HashMap * instanceVariableIndex;
+	ArrayList * instanceMethods;
+	ArrayList * instanceVariables;
+};
+
+struct RiftInstance
+{
+	int references;
+	
+	RiftClass * class;
+	ArrayList * instanceVariables;
+};
+
+//
+
+/*
+ * classVariables = {}
+ * classMethods = {}
+ * instanceVariables = {var1}
+ * instanceMethods = {met1, met2} 
+ */
+class Class1
+{
+	Int var1;
+	void met1() {...}
+	Float met2() {...}
+}
+
+/*
+ * classVariables = {}
+ * classMethods = {}
+ * instanceVariables = {}
+ * instanceMethods = {} 
+ */
+class Class2
+{
+	Float whatever;
+}
+
+/*
+ * classVariables = {klassVar1}
+ * classMethods = {klassMet1}
+ * instanceVariables = {var1, var2, whatever}
+ * instanceMethods = {met1, met2, met3} 
+ */
+class Class3 < Class1, Class2
+{
+	static ? klassVar1;
+	static ? klassMet1();
+	Int var2;
+	Float met2() {...}
+	? met3() {...}
+}
+
+/*
+ * undefinedMethods = {myMet1}
+ */
+interface Interface1
+{
+	void myMet1();
+}
+
+/*
+ * undefinedMethods = {a}
+ * instanceMethods = {myOtherMet}
+ */
+abstract class AbsClass1
+{
+	abstract void a();
+	void myOtherMet();
+}
+
+// how to most efficiently get a method from the methods list?
+	// k1 = {a, b}, k2 = {c, d}, AbsClass1 = {myOtherMet}, k3 < k1, k2, AbsClass1 = {e} => {e, a, b, c, d, myOtherMet}
+	// k3: k3 => 0, k1 => 1, l3 => 3, AbsClass1 => 5
+	// instanceMethods only includes defined instance methods
+	// multiple parents can specify a method, but only 1 can define
+	// a class is guarenteed to have a method defined if it is not abstract, and at least 1 parent's "staticDeclared" includes it
+
+interface I1
+{
+	? a();
+	? b();
+}
+interface I2
+{
+	? a();
+	? c();
+}
+interface I3
+{
+	Int a();
+}
+
+class C1 << I1, I2
+{
+	// ? a();
+	// ? b();
+	// ? c();
+}
+class C2 << I1, I3
+{
+	// error, a() has conflicting return types
+}
+class C3
+{
+	void met(<Int, Float> var1) {...}
+	void met(Int var1) {...}
+	// error, met(Int var1) defined multiple times
+}

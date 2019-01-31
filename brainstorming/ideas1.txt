@@ -67,16 +67,27 @@ interface Interface3
 class Class1
 {
 	
-	static Int +-counter;		// static var<Int> counter; public static var<Int> getCounter() {...}; public static var<Int> setCounter() {...};
-	static Int +var1;			// static var<Int> counter; public static var<Int> setCounter() {...};
+	static Int +-counter;		// static var<Int> counter; public static var<Int> counter() {...}; public static void counter=(var<Int> counter) {...};
+	static Int +var1;			// static var<Int> counter; public static void setCounter(var<Int> counter) {...};
 	static Int -var2;			// static var<Int> counter; public static var<Int> getCounter() {...};
 	static Int MY_CONSTANT = 0;	// static var<Int> MY_CONSTANT;
 	
-	<Float, String> stuff;	// var<Float, String> stuff; public var<Float, String> stuff
+	<Float, String> stuff;	// var<Float, String> stuff; public var<Float, String> stuff()
 	Float +-stuff2;			// 
 	Int +stuff3;			// 
 	String -stuff4;			// 
 	
+}
+
+class Class2 < Class1 << Interface1, Interface3
+{
+	
+}
+
+abstract class Class3
+{
+	Int testVar;			// var<Int> testVar;
+	<Int> testMet(? stuff);	// var<Int> testMet(var<?> stuff);
 }
 
 // Compilation
