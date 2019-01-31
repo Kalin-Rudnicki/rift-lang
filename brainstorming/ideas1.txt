@@ -1,0 +1,90 @@
+
+// Restricted Type
+Int myInt = 5;			// var<Int> myInt = 5;
+Float myFloat = 5;		// var<Float> myFloat = 5;
+Float myFloat = -.5;	// var<Float> myFloat = 5;
+<Int> myInt = 5;		// var<Int> myInt = 5;
+
+// Unrestricted Type
+? myVar = 5;		// var<?> myVar = 5;
+var<?> myVar = 5;	// var<?> myVar = 5;
+var myVar = 5;		// var<!> myVar = 5;
+var<!> myVar = 5;	// var<!> myVar = 5; // will attempt to infer type
+! myVar = 5;		// var<!> myVar = 5;
+
+<<toS()>> myVar;		// respVar<toS> myVar; // var that must have a toS method with 0 args. dynamic checks at runtime, otherwise check at compile time
+
+
+// Partially Restricted Type
+var<Int, Float> myIntOrFloat = null;	//var<Int, Float> myIntOrFloat = null;
+<Int, Float>
+
+// Methods
+	// Methods can return !, in which case any possible return type will be combined together
+		// ex: return a ? 5 : "5"; // would give a return type of var<Int, String>
+		// ! methods are automatically marked as final, therefore they can not be abstract
+		// this means that interfaces can not define !, abstract classes can not define abstract !, and ! methods can not be overridden
+	// parameters can not be !, ex void test(! a) is illegal
+
+void myMethod() {}						// public void myMethod() {}
+private void myMethod(Int x) {}			// private void myMethod(var<Int> x) {}
+void myMethod(<Int, Float> myNum) {}	// public void myMethod(var<Int, Float> myNum) {}
+Int myMethod(<Int, Float> myNum) {}		// public var<Int> myMethod(var<Int, Float> myNum) {}
+! exMethod() {}							// public var<!> exMethod() {}
+
+// Interfaces
+	// interfaces can impliment (<<) other interfaces
+	// if I1 << I2, and I1 & I2 both define the same method:
+		// void met(), void met(Int i) => different, I1 gets void met(int i)
+		// void met(Int i), void met(Float i) => different, I1 gets void met(Float i)
+		// void met(Int i), Int met() => different, I1 gets Int met()
+		// void met(), Int met() => clash, compile error
+		// void met(<Int, Float> n), void met(Int n) => compile warning, allowed, I1.met is now dynamic if type is I2
+		// void met(<Int> n), void met(<Int, Float> n) => compile warning, allowed, I1.met is now dynamic if type is I2
+
+interface Interface1
+{
+	protected void print();			// protected abstract void print();
+	private void accept(? stuff);	// private abstract void accept(var<?> stuff); // private to first class to inherit
+	<Int, RandomObj> generate();	// public abstract var<Int, RandomObj> generate();
+}
+interface Interface2 << Interface1
+{
+	void doStuff();	// public void doStuff();
+					// inherited:
+					// protected abstract void print();
+					// private abstract void accept(var<?> stuff);
+					// public abstract var<Int, RandomObj> generate();
+}
+interface Interface3
+{
+	void doOtherStuff();
+}
+
+// Classes
+	// all class variables and instance variables can only be private, but you can autodefine getters and setters.
+
+class Class1
+{
+	
+	static Int +-counter;		// static var<Int> counter; public static var<Int> getCounter() {...}; public static var<Int> setCounter() {...};
+	static Int +var1;			// static var<Int> counter; public static var<Int> setCounter() {...};
+	static Int -var2;			// static var<Int> counter; public static var<Int> getCounter() {...};
+	static Int MY_CONSTANT = 0;	// static var<Int> MY_CONSTANT;
+	
+	<Float, String> stuff;	// var<Float, String> stuff; public var<Float, String> stuff
+	Float +-stuff2;			// 
+	Int +stuff3;			// 
+	String -stuff4;			// 
+	
+}
+
+// Compilation
+	// --static-dynamic MODE. MODE < [DYNAMIC, STATIC, VALIDATE]
+		// DYNAMIC: compile into completely dynamic instructions
+			// this allows method calls to possibly illegal or non-existent functions by converting everything into a send
+		// STATIC: compile into completely static instructions
+			// this disallows Restricted and Partially Restricted variables, and will fail if a ! resolves into either
+		// VALIDATE:
+			// this will compile into a variety of static and dynamic instructions
+			// direct method calls to non existent methods is not allowed, but attempting to send would allow this, with a possible exceeption
