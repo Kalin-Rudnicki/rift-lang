@@ -1,0 +1,9 @@
+
+class Function<R; P...; F < Function...>
+{
+	
+}
+
+Function<Int; Float, <Int, String>; Function<void; Int;>
+
+

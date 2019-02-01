@@ -15,7 +15,28 @@ class Person
 
 void addPeople(Person... people)	// void addPeople(var<Person>... people)
 void addPeople(^Person... people)	// void addPeople((var<String> firstName, var<String> lastName, var<Int> age, var<Array<Person>> friends)... people)
-// Will collect arguments to create a person object
+// Will collect arguments to create person objects
+addPeople("Jacoob", "Bill", 21, null, "Kalin", "Rudnicki", 20, null); // => people.length = 2
 
-// Int...+ ints -> greedy
-// Int...- ints, -> non-greedy
+// How to deal with consecutive...s that might conflict?
+	// Int...+ ints -> greedy
+	// Int...- ints, -> non-greedy
+	// Int... ints, Float... floats
+	
+// Native
+	// Int
+	// Float
+	// String
+	// Symbol
+	// Enum
+	// Function
+
+// Enums
+enum AccountType
+{
+	CHECKING, SAVINGS;
+}
+
+void test(AccountType type) {}
+test(AccountType.CHECKING);
+test(:CHECKING); // same as above

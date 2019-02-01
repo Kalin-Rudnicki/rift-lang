@@ -17,3 +17,14 @@ void test((String firstName, String lastName, Int age, Person... friends)... peo
 // people[x].friends => Array<Friend>
 
 
+
+class Object
+{
+	
+	? methodMissing(Symbol methodName, ?... args, /* how to do lambdas */) { // raise error }
+	
+}
+
+// uses rubies 'methodMissing'
+// ~ points to methodMissing automatically
+// ex: myStuff~a(1, 2) // => myStuff.methodMissing(:a, 1, 2)
