@@ -1,0 +1,21 @@
+
+class Person
+{
+	
+	String firstName, lastName;
+	Int age;
+	Array<Person> friends;
+	
+	Person(String firstName, String lastName, Int age, Array<Person> friends)
+	{
+		...
+	}
+	
+}
+
+void addPeople(Person... people)	// void addPeople(var<Person>... people)
+void addPeople(^Person... people)	// void addPeople((var<String> firstName, var<String> lastName, var<Int> age, var<Array<Person>> friends)... people)
+// Will collect arguments to create a person object
+
+// Int...+ ints -> greedy
+// Int...- ints, -> non-greedy

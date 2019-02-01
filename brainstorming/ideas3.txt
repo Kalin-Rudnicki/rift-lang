@@ -1,0 +1,19 @@
+
+// Generics
+class Klass<T> // class Klass<var<T>>
+{
+	T data;		var<T> data;
+}
+class Klass<T, U> // class Klass<var<T>, var<U>>
+class Klass<<T, U>> // class Klass<var<T, U>>
+
+// VarArgs
+void test(Int... ints)						// void test(var<Int>... ints) {...}
+void test(Int... int, String... strings)	// void test(var<Int>... ints, var<String>... strings)
+void test((String firstName, String lastName, Int age)... people);
+// people[x].firstName // people[x].lastName
+
+void test((String firstName, String lastName, Int age, Person... friends)... people)
+// people[x].friends => Array<Friend>
+
+
