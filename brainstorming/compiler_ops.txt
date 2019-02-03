@@ -1,0 +1,7 @@
+./riftc [OPTIONS]
+	--[no-]checked-exceptions	: Treats CheckedExceptions as UncheckedExceptions
+	--method-strictness VAL		: [DEFINED, METHOD-MISSING, FREE]
+								// DEFINED:			A method must be explicitly defined, and called with the proper parameters
+								// METHOD-MISSING:	The calling class must have a methodMissing method defined, to capture illegal method names or invalid parameter types
+								// FREE:			Allow all calls
+								// with METHOD-MISSING and FREE, anything without a method found at compile time gets automatically converted to a send

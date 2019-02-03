@@ -1,0 +1,21 @@
+
+// Exceptions
+class Exception
+{
+	
+	protected String -message; // generates a getter
+	
+	Exception(String message = null)
+	{
+		this.message = message;
+	}
+	
+}
+
+class CheckedException < Exception {}
+class UncheckedException < Exception {}
+
+// CheckedException = java:Exception
+// UnCheckedException = java:RuntimeException
+
+

@@ -16,7 +16,9 @@ void test((String firstName, String lastName, Int age)... people);
 void test((String firstName, String lastName, Int age, Person... friends)... people)
 // people[x].friends => Array<Friend>
 
-
+// IMPORTANT:::
+// This NEEDS to be a valid line of code:
+// List<K> list = new List<K>();
 
 class Object
 {
