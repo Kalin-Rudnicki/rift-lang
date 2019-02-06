@@ -1,0 +1,27 @@
+
+// Obviously a stupid example, but I need some example to display explicit type conversion
+class IntArray
+{
+
+    Array<Int> ints;
+
+    IntArray(Int... ints)
+    {
+        #(ints);
+    }
+
+    Array<Int>:IntArray(Array<Int> ints)
+    {
+        #(ints);
+    }
+
+    Int [](index)
+    {
+        return ints[index];
+    }
+
+}
+
+Array<Int> array = {1, 2, 3};
+array << 4 << 5;
+IntArray ints = array;
