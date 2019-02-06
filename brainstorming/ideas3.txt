@@ -30,3 +30,16 @@ class Object
 // uses rubies 'methodMissing'
 // ~ points to methodMissing automatically
 // ex: myStuff~a(1, 2) // => myStuff.methodMissing(:a, 1, 2)
+
+// numerics
+	// -----
+	// Char => 1 byte? unicode?
+	// Byte => 1 byte
+	// Short => 2 bytes
+	// Integer => 4 bytes
+	// Long => 8 bytes ? 32-64?
+	// Int => variable length (default?)
+	// -----
+	// Float => 4 bytes
+	// Double => 8 bytes?
+	// Rational => Int / Int (default?)

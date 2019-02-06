@@ -19,3 +19,25 @@ class UncheckedException < Exception {}
 // UnCheckedException = java:RuntimeException
 
 
+// Eval / 'IRB'
+// must be able to "eval" a file/string with the guarentee that it evals to a certain thing
+// ex:
+Person loadedPerson = eval<Person>("Person.new(\"Kalin\", \"Rudnicki\", 20);");
+// Do these files simply get parsed? compiled?
+// same compile rules apply? specify different compile rules? always least strict?
+// block evals?
+
+? test() {}
+
+Int i = test();
+// Allow this?
+// Ability to assign less explicit types to more explicit types without casting?
+// Do I even want casting?
+// Generate a compiler warning?
+// Why even have casting, all that casting would do is throw a runtime exception anyway...
+// Decision: No casting
+
+Vehicle v = Car.new("Ferrari", "558");
+Car c = v; // Just fine
+Truck t = v; // TypeConversionError
+Truck t = c; // Compile error
