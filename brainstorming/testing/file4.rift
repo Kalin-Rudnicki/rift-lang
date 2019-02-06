@@ -1,0 +1,7 @@
+
+class Struct<*T t>
+{
+	*{T +-t};	
+}
+
+? person = Struct<String firstName, String lastName, Date birthDay>.new("Kalin", "Rudnicki", Date.at(8, 6, 1980))

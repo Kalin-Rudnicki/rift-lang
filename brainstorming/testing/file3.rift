@@ -25,3 +25,83 @@ class IntArray
 Array<Int> array = {1, 2, 3};
 array << 4 << 5;
 IntArray ints = array;
+
+class Date
+{
+    
+    Int -day, -month, -year;
+    
+    Date(Int day, Int month, Int year)
+    {
+        %(month != null)
+        {
+            // validation that only happens if the outer one passes. this allows you to do checks 
+            %(month >= 1 && month <= 12);
+        };
+        %(day != null);
+        %(year != null);
+        // more validation that I dont care to do
+    }
+    
+}
+
+class Time
+{
+    
+    Int -hour, -minute, -second, -nanos;
+    
+    // Same as having 2 constructors where one doesnt have nanos and calls the one that does with nanos as 0
+    Time(Int hour, Int minute, Int second, Int nanos = 0)
+    {
+        %(hour != null);
+        %(minute != null);
+        %(second != null);
+        %(nanos != null);
+        // More checking to do with legal values
+        
+        #(hour, minute, second, nanos);
+    }
+    
+}
+
+class DateTime < Date, Time
+{
+    
+    DateTime(Date date != null)
+    {
+        // Must be called in the order of inheritence
+        Date(date.day, date.month, date.year);
+        Time(0, 0, 0, 0);
+    }
+    DateTime(Time time != null)
+    {
+        Date(1, 1, 0);
+        Time(time.hour, time.minute, time.second, time.nanos);
+    }
+    
+    Date:DateTime(Date date)
+    {
+        DateTime(date);
+    }
+    
+    Time:DateTime(Time time)
+    {
+        DateTime(time);
+    }
+    
+}
+
+DateTime dt1 = DateTime.new(Date.new(1, 2, 3), Time.new(4, 5, 6));
+// Just fine, Date is a subclass
+Date date1 = dt1;
+// Just fine, Time is also a subclass
+Time time1 = dt1;
+
+// Just fine, explicit constructor not called, as date1 is actually dt1, which is already a DateTime
+DateTime dt2 = date1;
+// Just fine, explicit constructor not called, as time1 is actually dt1, which is already a DateTime, same as before
+DateTime dt2 = time1;
+
+Time time2 = Time.new(7, 8, 9); // nanos = 0
+// Time:DateTime(Time) is called, as Time is not already a DateTime
+DateTime dt2 = time2;
