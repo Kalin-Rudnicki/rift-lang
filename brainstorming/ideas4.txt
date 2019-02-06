@@ -41,3 +41,16 @@ Vehicle v = Car.new("Ferrari", "558");
 Car c = v; // Just fine
 Truck t = v; // TypeConversionError
 Truck t = c; // Compile error
+
+// You must call a parent constructor, but it does not have to be the FIRST thing in your constructor
+// that being said... you are not allowed to make any call any instance methods or make assignments to instance variables until that happens
+// Calling static methods is allowed, and writing multiple lines of code is also allowed
+// Argument checking is also allowed
+// Ex:
+Test(Int data)
+{
+    Int data2 = data + 1;
+    super(data2);
+}
+
+// in the more dynamic modes, MyKlassThatDoesntExist, will compile just fine, but obviously errors out at runtime

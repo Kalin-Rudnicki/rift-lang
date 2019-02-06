@@ -1,0 +1,62 @@
+
+#import <database>
+
+namespace DatabaseStuff
+{
+
+    // Database object defines methodMissing esq getters and setters?
+    class User // < DatabaseObject
+    {
+
+        // notice no '-'
+        UserAccessor accessor;
+
+        Int -id;
+        String -firstName, -lastName;
+        Date -birthDate;
+
+        private User(UserAccessor accessor != null, Int id, firstName != null, lastName != null, birthDate != null)
+        {
+            #(id, firstName, lastName, birthDate);
+        }
+
+
+
+    }
+
+    // Tuple
+    // {
+    //     // <...> specifies an assortment of return types, but is not as open as ? (anything)
+    //     // Only return types can be of multiple types
+    //     <Int, Float, String, Date', ...'> [] (index) { ... }
+    // }
+
+    class UserAccessor
+    {
+
+        UserDatabase -database;
+
+        UserAccessor(UserDatabase database != null)
+        {
+            #(database);
+        }
+
+        User parseUser(DatabaseTuple tuple != null)
+        {
+            // makes sure database query looks like we want it to
+            // technically TOTALLY optional, you would just get a cast error or out of bounds error instead of a nice %() check
+            // null passes for everything...?
+            %(tuple.looksLike(Int, String, String, Date));
+
+            Int id = tuple[0];
+            String firstName = tuple[1];
+            String lastName = tuple[2];
+            Date birthDate = tuple[3];
+
+            User user = User.__meta__.UserAccessor(this, id, firstName, lastName, birthDate);
+
+        }
+
+    }
+
+}

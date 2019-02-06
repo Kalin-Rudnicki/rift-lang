@@ -1,0 +1,96 @@
+
+namespace Vehicles
+{
+
+    abstract class Vehicle
+    {
+
+        enum Type { LAND, AIR, WATER };
+
+        // The '-' preceding 'type' auto-generates a getter
+            // it might be more accurate to say it "grants public read-access"
+            // and '+' "grants public write-access"
+            // public ? +-var; redundant... error? warning? low-importance-warning?
+        // The <> indicates that this instance variable is not available via meta-programing
+        // Default is private
+        // possible alternative to <>: hidden... hidden > private > protected > public
+        // meta-accesses to hidden error out at compile time by default, unless in a less safe mode
+        hidden Type -type;
+
+        Vehicle(Type type)
+        {
+            this.type = type;
+        }
+
+    }
+
+    class LandVehicle < Vehicle
+    {
+
+        Int -numWheels;
+
+        // other checks automatically call the "!= null" check
+        LandVehicle(Int numWheels > 0)
+        {
+            // other possible notation for argument checking:
+            // argCheck(numWheels > 0);
+            //%(numWheels > 0); would raise InvalidArgumentException
+            // consecutive %() will be combined into a single error, until any operation relates to a failed argument
+
+            // ':LAND' is the same as 'Type.LAND', if you did ':LAND2', it would be a compile error
+            super(:LAND);
+            this.numWheels = numWheels;
+        }
+
+    }
+
+    class RoadRegisteredVehicle < LandVehicle
+    {
+
+        VehicleRegistration +-registration;
+
+        // "registration = null" essentially creates RoadRegisteredVehicle(Int numWheels) { RoadRegisteredVehicle(numWheels, null); }
+        RoadRegisteredVehicle(Int numWheels, Registration registration = null)
+        {
+            super(numWheels);
+            #(registration);
+        }
+
+    }
+
+    class VehicleRegistration
+    {
+
+        String -identification;
+        String -make;
+        String -model;
+        Int -year;
+
+        // how much would be allowable to inline with the parameter definition?
+        VehicleRegistration(String identification != null, String make != null, String model != null, Int year != null)
+        {
+            // Same as:
+        //  %(identification != null);
+        //  %(make != null);
+        //  %(model != null);
+        //  %(year != null);
+            // if this fails, the error will reflect a combination of failures
+            // ex: "make can not be null, year can not be null"
+            // but, if you did:
+        //  %(make != null);
+        //  this.make = make;
+        //  %(year != null);
+            // then year being null would not be reflected in the error, because an operation involved an invalid argument
+            // compiler optimize this?
+            // as long as VAR is not accessed in any way before its %(VAR '...'); then it can be brought to the top
+
+            #(identification, make, model, year);
+            // Expands to:
+        //  this.identification = identification;
+        //  this.make = make;
+        //  this.model = model;
+        //  this.year = year;
+
+    }
+
+}
