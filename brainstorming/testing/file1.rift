@@ -15,7 +15,11 @@ namespace Vehicles
         // Default is private
         // possible alternative to <>: hidden... hidden > private > protected > public
         // meta-accesses to hidden error out at compile time by default, unless in a less safe mode
-        hidden Type -type;
+        // better option?: secure Type type;
+        // thoughts on this: if someone can meta-programming jump into your object and mess up the control flow,
+        // and this causes things to not work as expected, that is COMPLETELY their problem
+        // use 'secure' to remove __meta__ access for security concerns only
+        Type -type;
 
         Vehicle(Type type)
         {

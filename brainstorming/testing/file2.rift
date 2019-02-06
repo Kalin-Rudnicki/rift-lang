@@ -15,7 +15,7 @@ namespace DatabaseStuff
         String -firstName, -lastName;
         Date -birthDate;
 
-        private User(UserAccessor accessor != null, Int id, firstName != null, lastName != null, birthDate != null)
+        private User(UserAccessor accessor != null, Int id, String firstName != null, String lastName != null, Date birthDate != null)
         {
             #(id, firstName, lastName, birthDate);
         }
@@ -53,7 +53,7 @@ namespace DatabaseStuff
             String lastName = tuple[2];
             Date birthDate = tuple[3];
 
-            User user = User.__meta__.UserAccessor(this, id, firstName, lastName, birthDate);
+            User user = User.__meta__.constructor(UserAccessor, Int, String, String, Date).call(this, id, firstName, lastName, birthDate);
 
         }
 
