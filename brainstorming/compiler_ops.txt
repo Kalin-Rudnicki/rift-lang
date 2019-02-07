@@ -5,4 +5,5 @@
 								// METHOD-MISSING:	The calling class must have a methodMissing method defined, to capture illegal method names or invalid parameter types
 								// FREE:			Allow all calls
 								// with METHOD-MISSING and FREE, anything without a method found at compile time gets automatically converted to a send
-	--state                     : Does no actual compilation, rather does its best to
+	--state                     : Does no actual compilation, rather gives information about what the compiler sees
+								// ex: "can not find explicit definition of this methods", "this %(); will be relocated"

@@ -1,0 +1,3 @@
+
+// I think it would be very nice to have the option to keep around source code
+// Would have to be optional, ex: maybe somebody doesnt want their source code available

@@ -1,0 +1,46 @@
+
+// Ex1:
+/*
+file: f1.rift
+
+class Klass {}
+*/
+/*
+file: f2.rift
+
+class Klass {}
+*/
+/*
+file: main1.rift
+
+#include "f1.rift"
+#include "f2.rift"
+*/
+// this results in an error, as a single head of Klass can not be defined
+// 2 ways to define another definition as before you
+	// 1) easy... if it is above you in the same file
+	// 2) include the other file
+
+// Ex2:
+/*
+file: f3.rift
+
+class Klass {}
+
+class Klass {}
+*/
+// this is totally fine, because multiple definitions happen in the same file
+
+// Ex3:
+/*
+file: f4.rift
+
+class Klass {}
+*/
+/*
+file: f5.rift
+
+#include "f4.rift"
+
+class Klass {}
+*/
