@@ -1,0 +1,68 @@
+
+class Hash<K, V>
+{
+
+    Int size;
+    Array<LinkedList<V>> data;
+
+    Hash(Int size = 25)
+    {
+        %(size > 0);
+        // expands to "this.size = size;"
+        #(size);
+        this.data = LinkedList<LinkedList<V>>.new(size) { LinkedList<V>.new(); };
+    }
+
+    V, Boolean put(K key, V value, Boolean overwrite = true)
+    {
+        // () not needed on empty methods
+        // no need to check for null, as null will just return 0
+        Int hashCode = key.hash % this.size;
+
+        LinkedList<V> indexedList = this.data[hashCode];
+        Boolean replaced = false;
+        V replacedVal = null;
+
+        indexedList.each
+        { |V val, Int index|
+            if (value == val)
+            {
+                replacedVal = val;
+                replaced = true;
+                indexedList[index] = value;
+                break;
+            }
+        };
+
+        unless (replaced)
+        {
+            indexedList << value;
+        }
+
+        return replacedVal, replaced;
+    }
+
+    V, Boolean get(K key)
+    {
+
+        Int hashCode = key.hash % this.size;
+        LinkedList<V> indexedList = this.data[hashCode];
+
+        Boolean found = false;
+        V foundVal = null;
+
+        // notice this '.each' calls the version without 'Int index'
+        indexedList.each
+        { |V val|
+            if (value == val)
+            {
+                foundVal = val;
+                found = true;
+                break;
+            }
+        };
+
+        return foundVal, found;
+    }
+
+}
