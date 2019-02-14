@@ -1,0 +1,19 @@
+
+void main(Array<String> args)
+{
+	
+	Rift::Graphics::Canvas canvas = Rift::Graphics::Canvas.new();
+	Rift::Graphics::Frame frame = Rift::Graphics::Frame.new(500, 300, canvas);
+	
+	loop
+	{
+		canvas.clear
+		
+		canvas.fillRect(Rift::Graphics::Color.RED, 0, 0, canvas.width / 2, canvas.height / 2);
+		// Notice how much nicer this symbol notation looks
+		canvas.fillRect(:BLUE, canvas.width / 2, 0, canvas.width / 2, canvas.height / 2);
+		
+		canvas.draw
+	}
+	
+}
