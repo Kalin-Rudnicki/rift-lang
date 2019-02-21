@@ -1,0 +1,13 @@
+
+// Compilation
+
+rift text code
+rift assembler code
+assembly code
+executable
+
+// Defining the basic stuff
+
+native <Generics...> [ReturnTypes...] functName(ArgumentTypes...);
+
+and then the code is specified in rift assembler

@@ -2,26 +2,35 @@
 #include "VmException.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-struct StackTrace
+// --- Structs ---
+
+struct VmStackTrace;
+typedef struct VmStackTrace VmStackTrace;
+
+struct VmStackTrace
 {
-	const char* file;
-	const char* function;
-	const int lineNum;
-	StackTrace * next;
-}
+	char* file;
+	char* function;
+	int lineNum;
+	VmStackTrace * next;
+};
 struct VmException
 {
-	const char* condition;
-	const char* type;
-	const char* message;
+	char* condition;
+	char* type;
+	char* message;
 	
-	StackTrace * head;
-}
+	VmStackTrace * head;
+};
 
-StackTrace * StackTrace_new(const char* file, const char* function, const int lineNum)
+// --- Functions ---
+
+// VmStackTrace
+VmStackTrace * VmStackTrace_new(const char* file, const char* function, const int lineNum)
 {
-	StackTrace * stackTrace = malloc(sizeof(StackTrace));
+	VmStackTrace * stackTrace = malloc(sizeof(VmStackTrace));
 	
 	if (file)
 	{
@@ -44,7 +53,7 @@ StackTrace * StackTrace_new(const char* file, const char* function, const int li
 	
 	return stackTrace;
 }
-void StackTrace_destroy(StackTrace * stackTrace)
+void VmStackTrace_destroy(VmStackTrace * stackTrace)
 {
 	if (stackTrace == NULL)
 	{
@@ -52,7 +61,7 @@ void StackTrace_destroy(StackTrace * stackTrace)
 	}
 	else
 	{
-		StackTrace_destroy(stackTrace->next);
+		VmStackTrace_destroy(stackTrace->next);
 	}
 	
 	if (stackTrace->file)
@@ -66,6 +75,7 @@ void StackTrace_destroy(StackTrace * stackTrace)
 	free(stackTrace);
 }
 
+// VmException
 VmException * VmException_new(const char* condition, const char* type, const char* message, const char* file, const char* function, const int lineNum)
 {
 	VmException * vmException = malloc(sizeof(VmException));
@@ -94,7 +104,7 @@ VmException * VmException_new(const char* condition, const char* type, const cha
 	{
 		vmException->message = NULL;
 	}
-	vmException->head = StackTrace_new(file, function, lineNum);
+	vmException->head = VmStackTrace_new(file, function, lineNum);
 	
 	return vmException;
 }
@@ -105,7 +115,7 @@ void VmException_destroy(VmException * vmException)
 		printf("You need to use VmException properly... (%s:%d)\n", __FILE__, __LINE__);
 		exit(1);
 	}
-	StackTrace_destroy(vmException->head);
+	VmStackTrace_destroy(vmException->head);
 	if (vmException->condition)
 	{
 		free(vmException->condition);
@@ -128,7 +138,7 @@ void VmException_addTrace(VmException * vmException, const char* file, const cha
 		printf("You need to use VmException properly... (%s:%d)\n", __FILE__, __LINE__);
 		exit(1);
 	}
-	StackTrace * newTrace = StackTrace_new(file, function, lineNum);
+	VmStackTrace * newTrace = VmStackTrace_new(file, function, lineNum);
 	newTrace->next = vmException->head;
 	vmException->head = newTrace;
 }
@@ -139,7 +149,23 @@ void VmException_print(VmException * vmException)
 		printf("You need to use VmException properly... (%s:%d)\n", __FILE__, __LINE__);
 		exit(1);
 	}
-	printf("TO-DO...\n");
+	
+	int maxFile = 0;
+	for (VmStackTrace * trace = vmException->head; trace != NULL; trace = trace->next)
+	{
+		int currentFile = strlen(trace->file);
+		if (currentFile > maxFile)
+		{
+			maxFile = currentFile;
+		}
+	}
+	
+	printf("[\x1b[31mERROR\x1b[0m]: (%s) %s\n", vmException->type, vmException->message);
+	printf("    %*s: \x1b[31m%s\x1b[0m\n", maxFile, "condition", vmException->condition);
+	for (VmStackTrace * trace = vmException->head; trace != NULL; trace = trace->next)
+	{
+		printf("    \x1b[36m%*s\x1b[0m:\x1b[34m%-5d\x1b[0m %4s \x1b[32m%s\x1b[0m\n", maxFile, trace->file, trace->lineNum, trace->next == NULL ? "from" : "in", trace->function);
+	}
 }
 void VmException_raise(VmException * vmException)
 {

@@ -1,3 +1,55 @@
 
 // I think it would be very nice to have the option to keep around source code
 // Would have to be optional, ex: maybe somebody doesnt want their source code available
+
+/*
+give no control over method/method!
+you can only define "method", but by defining "method", you also define "method!"
+should ! be opposite of ruby!
+this is only the case for instance methods.
+return type is same as before, but with an additional return of the duplication
+have some sort of keyword to change this behavior
+
+only do this if there is modification to any instance variables
+
+how to deal with map would need to map to the same type, and map! could be to anything?
+*/
+
+class MyClass
+{
+	
+	Int int;
+	
+	void print()
+	{
+		puts("#<#{this.class}; int: #{this.int}>");
+	}
+	
+	Int getInt()
+	{
+		return this.int;
+	}
+	
+	Boolean setIntIfGreater(Int i)
+	{
+		if (i > this.int)
+		{
+			this.int = i;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	/*
+	[Boolean, MyClass] setIntIfGreater!(Int i)
+	{
+		MyClass new = this.duplicate;
+		Boolean result = new.setIntIfGreater!(i);
+		return result, new;
+	}
+	*/
+	
+}
