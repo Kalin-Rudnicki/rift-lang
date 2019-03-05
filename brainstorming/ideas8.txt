@@ -1,0 +1,46 @@
+
+Something like c++ operates on the notion that everything needs to be as type safe and efficient as possible.
+Something like ruby operates on the notion that type safety and efficiency  are second class citizens.
+
+In reality, what you often want is most things to be running as efficiently as possible,
+with the ability to do a few funky things here and there.
+
+...
+
+You have regular Classes/Objects, and Meta Classes/Objects.
+
+- regular classes/objects allow for meta-programming getters
+- meta classes/objects allow for meta-programming getters and setters
+
+Object.class = Class
+MetaObject.class = MetaClass
+
+Class.new(:Blah) => Error (Cant create classes on the fly)
+MetaClass.new(:Blah) => Blah, Blah.class => MetaClass, Blah.superclass = MetaClass
+
+...
+
+class Person
+{
+	
+	String -firstName, -lastName;
+	Int -age;
+	
+	Person(String firstName, String lastName, Int age)
+	{
+		%(fistName != null);
+		%(lastName != null);
+		%(age >= 0);
+		#(firstName, lastName, age);
+	}
+	
+	String toStr(&Function<String; Person> toS = { |Person p| "( #{p.lastName}, #{p.firstName}: #{p.age} )" })
+	{
+		toS.call(this);
+	}
+	
+}
+
+Person.new("F", "L", 1).call(:toStr); // => "( L, F: 1 )"
+
+Disallow mulitply defined ... methods
