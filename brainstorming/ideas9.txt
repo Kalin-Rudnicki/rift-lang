@@ -1,0 +1,28 @@
+
+Compilation:
+
+Consider 3 files: A, B, C
+A includes B and C
+
+B   C
+ \ /
+  A
+
+C can not use functions declared in B
+if B and C declare the same function or class, it is an error
+
+...
+
+Now consider a 4th file D...
+
+  D
+ / \
+B   C
+ \ /
+  A
+
+Lets say that B redefines a function declared in D
+there are a few options for how C should see this:
+	1) error
+	2) warning - use old
+	3) warning - use new

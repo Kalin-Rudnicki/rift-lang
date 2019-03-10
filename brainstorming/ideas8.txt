@@ -43,4 +43,4 @@ class Person
 
 Person.new("F", "L", 1).call(:toStr); // => "( L, F: 1 )"
 
-Disallow mulitply defined ... methods
+Disallow mulitply defined "..." methods
