@@ -1,0 +1,3 @@
+
+Int i = 5;
+String str = "Num: #{i}"

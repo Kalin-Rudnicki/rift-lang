@@ -1,0 +1,10 @@
+class Klass
+{
+    Int i, j;
+    Klass(Int i, Int j)
+    {
+        %(i >= 0);
+        %(j >= 0);
+        #(i, j);
+    }
+}
