@@ -1,0 +1,57 @@
+try
+{
+
+}
+catch (Ex1 e)
+{
+
+}
+catch(Ex2 e)
+{
+
+}
+finally
+{
+
+}
+
+always store last try block in a register?
+try data stores next try block up
+also stores list of catches and possible finally
+how to handle errors in finally?
+
+try
+{
+    try
+    {
+        throw "Test";
+    }
+    finally
+    {
+        throw "Test 2"; // instead throws FinallyMaskedException("Test", "Test 2");
+    }
+}
+finally
+{
+    throw "Test 3"; // FinallyMaskedException(FinallyMaskedException("Test", "Test 2"), "Test 3");
+}
+
+try
+{
+    throw "Test";
+}
+catch(Exception e)
+{
+    throw "Test 2";
+}
+finally
+{
+    throw "Test 3"; // FinallyMaskedException("Test 2", "Test 3");
+}
+
+-----
+
+Stack:
+parent_stack_frame
+return_addresses (&addr)
+parameters / local_variables
