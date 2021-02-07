@@ -1,0 +1,3 @@
+symbols: <>-+/*^%&|
+
+local_var > instance_var > method
